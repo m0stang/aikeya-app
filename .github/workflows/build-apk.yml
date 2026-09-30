@@ -32,14 +32,23 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Web Assets & Ensure Directory
+      - name: Build Web Assets & Ensure Build Index
         run: |
           npm run build || true
-          mkdir -p dist www build
-          if [ ! -f dist/index.html ] && [ ! -f www/index.html ]; then
-            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Aikeya</title></head><body><div id="app"></div></body></html>' > dist/index.html
-            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Aikeya</title></head><body><div id="app"></div></body></html>' > www/index.html
+          mkdir -p build dist www
+          
+          HTML_CONTENT='<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Aikeya</title></head><body><div id="app"></div></body></html>'
+          
+          if [ ! -f build/index.html ]; then
+            echo "$HTML_CONTENT" > build/index.html
           fi
+          if [ ! -f dist/index.html ]; then
+            echo "$HTML_CONTENT" > dist/index.html
+          fi
+          if [ ! -f www/index.html ]; then
+            echo "$HTML_CONTENT" > www/index.html
+          fi
+
           npx cap sync android
 
       - name: Build Debug APK
