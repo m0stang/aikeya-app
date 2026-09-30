@@ -13,6 +13,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
@@ -31,12 +36,13 @@ jobs:
           echo "sdk.dir=$ANDROID_HOME" > android/local.properties
 
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install --no-frozen-lockfile
 
-      - name: Build Web App & Sync Capacitor
+      - name: Build SvelteKit & Sync Capacitor
         run: |
-          npm run build || true
-          npx cap copy android
+          pnpm add -D @sveltejs/adapter-static || true
+          pnpm run build
+          test -f build/index.html
           npx cap sync android
 
       - name: Build Debug APK
