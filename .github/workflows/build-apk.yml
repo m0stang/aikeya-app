@@ -2,45 +2,45 @@ name: Build Standalone Offline APK
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          submodules: recursive
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Setup Android NDK
-        uses: nsetup/setup-android-ndk@v1
-        with:
-          ndk-version: r25b
+      - name: Install Android NDK
+        run: |
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;25.2.9519653"
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Web App & Sync Capacitor
-        run: |
-          npm run build
-          npx cap sync android
+      - name: Build Web Assets
+        run: npm run build
 
-      - name: Build Android APK with Native Llama Engine
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
