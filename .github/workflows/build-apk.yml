@@ -38,9 +38,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build SvelteKit & Sync Capacitor
+      - name: Add MDsveX & Build SvelteKit
         run: |
-          pnpm add -D @sveltejs/adapter-static || true
+          pnpm add -D mdsvex @sveltejs/adapter-static || true
           pnpm run build
           test -f build/index.html
           npx cap sync android
