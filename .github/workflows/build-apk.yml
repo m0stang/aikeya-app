@@ -1,0 +1,53 @@
+name: Build Standalone Offline APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android NDK
+        uses: nsetup/setup-android-ndk@v1
+        with:
+          ndk-version: r25b
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Web App & Sync Capacitor
+        run: |
+          npm run build
+          npx cap sync android
+
+      - name: Build Android APK with Native Llama Engine
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Aikeya-Offline-App
+          path: android/app/build/outputs/apk/debug/app-debug.apk

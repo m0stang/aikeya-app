@@ -51,6 +51,10 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
+		"@capacitor/android": "^8.5.2",
+		"@capacitor/cli": "^8.5.2",
+		"@capacitor/core": "^8.5.2",
+		"@capacitor/local-notifications": "^8.3.1",
 		"@pixiv/three-vrm": "^3.4.5",
 		"@pixiv/three-vrm-animation": "^3.4.5",
 		"@tauri-apps/plugin-opener": "^2.5.3",

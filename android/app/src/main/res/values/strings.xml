@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Aikeya</string>
+    <string name="title_activity_main">Aikeya</string>
+    <string name="package_name">com.aikeya.app</string>
+    <string name="custom_url_scheme">com.aikeya.app</string>
+</resources>
