@@ -24,22 +24,16 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Accept Licenses & Install NDK
+      - name: Accept Android Licenses & Install NDK
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses || true
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "ndk;25.2.9519653"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;25.2.9519653"
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Web Assets
-        run: npm run build
-
-      - name: Sync Capacitor Android
-        run: npx cap sync android
+      - name: Install & Build Web Assets
+        run: |
+          npm install
+          npm run build
+          npx cap sync android
 
       - name: Build Debug APK
         run: |
