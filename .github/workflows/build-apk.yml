@@ -40,7 +40,7 @@ jobs:
 
       - name: Generate App Icons & Build SvelteKit
         run: |
-          npx @capacitor/assets generate --iconBackgroundColor #4f46e5 || true
+          npx @capacitor/assets generate --iconBackgroundColor '#4f46e5' || true
           pnpm run build
           test -f build/index.html
           npx cap sync android
