@@ -38,7 +38,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Generate App Icons & Build SvelteKit
+      - name: Generate Assets & Build SvelteKit
         run: |
           npx @capacitor/assets generate --iconBackgroundColor '#4f46e5' || true
           pnpm run build
