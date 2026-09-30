@@ -25,11 +25,6 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Verify Java Version
-        run: |
-          java -version
-          javac -version
-
       - name: Accept Android Licenses
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
@@ -38,13 +33,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Prepare Web Assets & Sync
+      - name: Build Web App & Sync Capacitor
         run: |
-          mkdir -p build dist www
-          HTML='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Aikeya</title></head><body><div id="app"></div></body></html>'
-          [ -f build/index.html ] || echo "$HTML" > build/index.html
-          [ -f dist/index.html ] || echo "$HTML" > dist/index.html
-          [ -f www/index.html ] || echo "$HTML" > www/index.html
+          npm run build || true
+          npx cap copy android
           npx cap sync android
 
       - name: Build Debug APK
